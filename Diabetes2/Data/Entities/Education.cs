@@ -13,5 +13,8 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Enlaces multimedia")]
         public List<string>? MultimediaLinks { get; set; }
+
+        [Required]
+        public User? User { get; set; }
     }
 }

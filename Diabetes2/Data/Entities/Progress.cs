@@ -13,5 +13,10 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Estadísticas de salud")]
         public string? HealthStadistics { get; set; }
+
+        [Required]
+        public Patient? Patient { get; set; }
+        [Required]
+        public User? User { get; set; }
     }
 }

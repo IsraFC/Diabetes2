@@ -20,5 +20,8 @@ namespace Diabetes2.Data.Entities
         [Display(Name = "Fecha")]
         public DateTime Date { get; set; }
 
+        [Required]
+        public User? User { get; set; }
+
     }
 }

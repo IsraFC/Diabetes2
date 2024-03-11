@@ -20,6 +20,16 @@ namespace Diabetes2.Data.Entities
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres")]
         public string? Email { get; set; }
 
+        [Required]
+        public ICollection<Exercise>? Exercises { get; set; }
+        [Required]
+        public Patient? Patient { get; set; }
+        [Required]
+        public ICollection<ReminderAlert>? ReminderAlerts { get; set; }
+        [Required]
+        public ICollection<Education>? Educations { get; set; }
+        [Required]
+        public ICollection<Progress>? Progresses { get; set; }
     }
 }
 

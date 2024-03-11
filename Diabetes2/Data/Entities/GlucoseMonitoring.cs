@@ -30,6 +30,8 @@ namespace Diabetes2.Data.Entities
 
             }
         }
+
+        public Patient? Patient { get; set; }
     }
 }
     

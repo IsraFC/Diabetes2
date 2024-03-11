@@ -14,5 +14,8 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Seguimiento de la Dieta")]
         public string? SeguimientoDieta { get; set; }
+
+        [Required]
+        public User? User { get; set; }
     }
 }

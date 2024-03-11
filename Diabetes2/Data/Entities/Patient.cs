@@ -21,5 +21,16 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Estatura")]
         public double? Height { get; set; }
+
+        [Required]
+        public User? User { get; set; }
+        [Required]
+        public GlucoseMonitoring? GlucoseMonitorings { get; set; }
+        [Required]
+        public ICollection<HealthcareP>? HealthcarePs { get; set; }
+        [Required]
+        public MealPlanning? MealPlanning { get; set; }
+        [Required]
+        public ICollection<Progress>? Progresses { get; set; }
     }
 }
