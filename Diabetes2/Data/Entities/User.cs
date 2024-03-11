@@ -5,6 +5,8 @@ namespace Diabetes2.Data.Entities
 {
     public class User
     {
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Nombre(s)")]
         [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres")]
