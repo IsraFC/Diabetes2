@@ -22,7 +22,10 @@ namespace Diabetes2.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Patient>().HasOne(p => p.GlucoseMonitorings).WithOne(g => g.Patient).HasForeignKey<GlucoseMonitoring>(g => g.Id);
+            modelBuilder.Entity<Progress>().HasOne(p => p.Patient).WithMany().HasForeignKey(p => p.Id).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Progress>().HasOne(p => p.User).WithMany().HasForeignKey(p => p.Id).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<GlucoseMonitoring>().HasOne(g => g.Patient).WithOne(p => p.GlucoseMonitorings).HasForeignKey<Patient>(p => p.Id);
+            modelBuilder.Entity<User>().HasOne(u => u.Patient).WithOne(p => p.User).HasForeignKey<Patient>(p => p.Id);
             modelBuilder.Entity<Patient>().HasOne(p => p.User).WithOne(u => u.Patient).HasForeignKey<User>(u => u.Id);
         }
     }

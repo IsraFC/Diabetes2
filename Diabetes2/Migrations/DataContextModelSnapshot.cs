@@ -80,7 +80,10 @@ namespace Diabetes2.Migrations
             modelBuilder.Entity("Diabetes2.Data.Entities.GlucoseMonitoring", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FoodReport")
                         .IsRequired()
@@ -152,10 +155,7 @@ namespace Diabetes2.Migrations
             modelBuilder.Entity("Diabetes2.Data.Entities.Patient", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Age")
                         .IsRequired()
@@ -186,10 +186,7 @@ namespace Diabetes2.Migrations
             modelBuilder.Entity("Diabetes2.Data.Entities.Progress", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Graphics")
                         .IsRequired()
@@ -199,10 +196,10 @@ namespace Diabetes2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -286,17 +283,6 @@ namespace Diabetes2.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Diabetes2.Data.Entities.GlucoseMonitoring", b =>
-                {
-                    b.HasOne("Diabetes2.Data.Entities.Patient", "Patient")
-                        .WithOne("GlucoseMonitorings")
-                        .HasForeignKey("Diabetes2.Data.Entities.GlucoseMonitoring", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("Diabetes2.Data.Entities.HealthcareP", b =>
                 {
                     b.HasOne("Diabetes2.Data.Entities.Patient", "Patient")
@@ -310,11 +296,19 @@ namespace Diabetes2.Migrations
 
             modelBuilder.Entity("Diabetes2.Data.Entities.Patient", b =>
                 {
+                    b.HasOne("Diabetes2.Data.Entities.GlucoseMonitoring", "GlucoseMonitorings")
+                        .WithOne("Patient")
+                        .HasForeignKey("Diabetes2.Data.Entities.Patient", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Diabetes2.Data.Entities.MealPlanning", "MealPlanning")
                         .WithMany("Patients")
                         .HasForeignKey("MealPlanningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GlucoseMonitorings");
 
                     b.Navigation("MealPlanning");
                 });
@@ -322,16 +316,24 @@ namespace Diabetes2.Migrations
             modelBuilder.Entity("Diabetes2.Data.Entities.Progress", b =>
                 {
                     b.HasOne("Diabetes2.Data.Entities.Patient", "Patient")
-                        .WithMany("Progresses")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Diabetes2.Data.Entities.User", "User")
-                        .WithMany("Progresses")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Diabetes2.Data.Entities.Patient", null)
+                        .WithMany("Progresses")
+                        .HasForeignKey("PatientId");
+
+                    b.HasOne("Diabetes2.Data.Entities.User", null)
+                        .WithMany("Progresses")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Patient");
 
@@ -360,6 +362,11 @@ namespace Diabetes2.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("Diabetes2.Data.Entities.GlucoseMonitoring", b =>
+                {
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Diabetes2.Data.Entities.MealPlanning", b =>
                 {
                     b.Navigation("Patients");
@@ -367,9 +374,6 @@ namespace Diabetes2.Migrations
 
             modelBuilder.Entity("Diabetes2.Data.Entities.Patient", b =>
                 {
-                    b.Navigation("GlucoseMonitorings")
-                        .IsRequired();
-
                     b.Navigation("HealthcarePs");
 
                     b.Navigation("Progresses");

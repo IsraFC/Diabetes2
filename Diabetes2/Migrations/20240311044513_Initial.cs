@@ -12,6 +12,20 @@ namespace Diabetes2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "GlucoseMonitorings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GlucoseIn = table.Column<float>(type: "real", nullable: false),
+                    FoodReport = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GlucoseMonitorings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MealPlannings",
                 columns: table => new
                 {
@@ -29,8 +43,7 @@ namespace Diabetes2.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Weight = table.Column<float>(type: "real", nullable: false),
@@ -41,28 +54,15 @@ namespace Diabetes2.Migrations
                 {
                     table.PrimaryKey("PK_Patients", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Patients_GlucoseMonitorings_Id",
+                        column: x => x.Id,
+                        principalTable: "GlucoseMonitorings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Patients_MealPlannings_MealPlanningId",
                         column: x => x.MealPlanningId,
                         principalTable: "MealPlannings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GlucoseMonitorings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    GlucoseIn = table.Column<float>(type: "real", nullable: false),
-                    FoodReport = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GlucoseMonitorings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GlucoseMonitorings_Patients_Id",
-                        column: x => x.Id,
-                        principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -156,28 +156,37 @@ namespace Diabetes2.Migrations
                 name: "Progresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Graphics = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HealthStadistics = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    PatientId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Progresses", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Progresses_Patients_Id",
+                        column: x => x.Id,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Progresses_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Progresses_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Progresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -247,9 +256,6 @@ namespace Diabetes2.Migrations
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "GlucoseMonitorings");
-
-            migrationBuilder.DropTable(
                 name: "HealthcarePs");
 
             migrationBuilder.DropTable(
@@ -263,6 +269,9 @@ namespace Diabetes2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "GlucoseMonitorings");
 
             migrationBuilder.DropTable(
                 name: "MealPlannings");
