@@ -14,6 +14,6 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Plan de alimentación")]
         [MaxLength(300, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres")]
-        public char? PMealPlans { get; set; }
+        public string? PMealPlans { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace Diabetes2.Data.Entities
         [Required]
         [Display(Name = "Correo")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres")]
-
         public string? Email { get; set; }
 
     }

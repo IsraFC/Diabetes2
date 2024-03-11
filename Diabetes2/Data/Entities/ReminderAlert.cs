@@ -8,6 +8,7 @@ namespace Diabetes2.Data.Entities
 
         [Required]  
         [Display(Name = "Recordatorio de Medicamentos")]
+        [DataType(DataType.Time)]
         public DateTime HoraRecordatorio { get; set; }
 
         [Required]

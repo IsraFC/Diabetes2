@@ -15,7 +15,7 @@ namespace Diabetes2.Data.Entities
 
         [Required]
         [Display(Name = "Profesión")]
-        public char? profession { get; set; }
+        public string? profession { get; set; }
 
     }
 }
